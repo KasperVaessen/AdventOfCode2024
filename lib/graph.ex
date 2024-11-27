@@ -44,6 +44,6 @@ defmodule AdventOfCode.Graph do
   end
 
   defp distance(distances, vertex) do
-    Map.get(distances, vertex, :inifinity)
+    Map.get(distances, vertex, :infinity)
   end
 end
