@@ -78,9 +78,10 @@ defmodule AdventOfCode.Grid do
     |> Enum.join("\n")
   end
 
-  @spec print(__MODULE__.t(), String.t()) :: :ok
+  @spec print(__MODULE__.t(), String.t()) :: __MODULE__.t()
   def print(grid, spacer \\ "") do
     IO.puts(get_string(grid, spacer))
+    grid
   end
 
   @spec get_surrounding(__MODULE__.t(), non_neg_integer(), non_neg_integer()) :: __MODULE__.t()
