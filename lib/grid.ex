@@ -69,6 +69,58 @@ defmodule AdventOfCode.Grid do
     end
   end
 
+  @spec transpose(__MODULE__.t()) :: __MODULE__.t()
+  def transpose(grid) do
+    data =
+      grid.data
+      |> Tuple.to_list()
+      |> Enum.map(&Tuple.to_list/1)
+      |> Enum.zip()
+      |> List.to_tuple()
+
+    %__MODULE__{rows: grid.cols, cols: grid.rows, data: data}
+  end
+
+  @spec rotate_90(__MODULE__.t()) :: __MODULE__.t()
+  def rotate_90(grid) do
+    data =
+      grid.data
+      |> Tuple.to_list()
+      |> Enum.map(&Tuple.to_list/1)
+      |> Enum.reverse()
+      |> Enum.zip()
+      |> List.to_tuple()
+
+    %__MODULE__{rows: grid.rows, cols: grid.cols, data: data}
+  end
+
+  @spec rotate_180(__MODULE__.t()) :: __MODULE__.t()
+  def rotate_180(grid) do
+    data =
+      grid.data
+      |> Tuple.to_list()
+      |> Enum.map(&Tuple.to_list/1)
+      |> Enum.reverse()
+      |> Enum.map(&Enum.reverse/1)
+      |> Enum.map(&List.to_tuple/1)
+      |> List.to_tuple()
+
+    %__MODULE__{rows: grid.rows, cols: grid.cols, data: data}
+  end
+
+  @spec rotate_270(__MODULE__.t()) :: __MODULE__.t()
+  def rotate_270(grid) do
+    data =
+      grid.data
+      |> Tuple.to_list()
+      |> Enum.map(&Tuple.to_list/1)
+      |> Enum.zip()
+      |> Enum.reverse()
+      |> List.to_tuple()
+
+    %__MODULE__{rows: grid.rows, cols: grid.cols, data: data}
+  end
+
   @spec get_string(__MODULE__.t(), String.t()) :: String.t()
   def get_string(grid, spacer \\ "") do
     grid.data

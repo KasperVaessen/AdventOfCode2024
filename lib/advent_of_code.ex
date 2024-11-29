@@ -32,4 +32,42 @@ defmodule AdventOfCode do
 
     Graph.dijkstra(start_pos, neighbour_func, success_func) |> dbg()
   end
+
+  def test_transpose() do
+    grid =
+      "00000\n00000\n00000\n00010"
+      |> Grid.read_grid()
+      |> Grid.print("\t")
+
+    grid
+    |> Grid.transpose()
+    |> Grid.print("\t")
+  end
+
+  def test_rotate() do
+    IO.puts("Rotate 0 degrees")
+
+    grid =
+      "123\n456\n789"
+      |> Grid.read_grid()
+      |> Grid.print("\t")
+
+    IO.puts("Rotate 90 degrees")
+
+    grid
+    |> Grid.rotate_90()
+    |> Grid.print("\t")
+
+    IO.puts("Rotate 180 degrees")
+
+    grid
+    |> Grid.rotate_180()
+    |> Grid.print("\t")
+
+    IO.puts("Rotate 270 degrees")
+
+    grid
+    |> Grid.rotate_270()
+    |> Grid.print("\t")
+  end
 end
