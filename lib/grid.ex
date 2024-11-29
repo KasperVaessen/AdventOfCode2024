@@ -69,6 +69,27 @@ defmodule AdventOfCode.Grid do
     end
   end
 
+  @spec get_row(__MODULE__.t(), non_neg_integer()) :: tuple()
+  def get_row(grid, row) do
+    if row < 0 or row >= grid.rows do
+      nil
+    else
+      elem(grid.data, row)
+    end
+  end
+
+  @spec get_col(__MODULE__.t(), non_neg_integer()) :: tuple()
+  def get_col(grid, col) do
+    if col < 0 or col >= grid.cols do
+      nil
+    else
+      grid.data
+      |> Tuple.to_list()
+      |> Enum.map(&elem(&1, col))
+      |> List.to_tuple()
+    end
+  end
+
   @spec transpose(__MODULE__.t()) :: __MODULE__.t()
   def transpose(grid) do
     data =
