@@ -33,7 +33,7 @@ defmodule AdventOfCode.Grid do
 
     data =
       input
-      |> String.split("\n", trim: false)
+      |> String.split(["\n", "\r", "\r\n"], trim: true)
       |> Enum.map(&row_mapper.(&1))
       |> Enum.map(&List.to_tuple/1)
       |> List.to_tuple()
@@ -69,16 +69,16 @@ defmodule AdventOfCode.Grid do
     end
   end
 
-  @spec get_row(__MODULE__.t(), non_neg_integer()) :: tuple()
+  @spec get_row(__MODULE__.t(), non_neg_integer()) :: list()
   def get_row(grid, row) do
     if row < 0 or row >= grid.rows do
       nil
     else
-      elem(grid.data, row)
+      elem(grid.data, row) |> Tuple.to_list()
     end
   end
 
-  @spec get_col(__MODULE__.t(), non_neg_integer()) :: tuple()
+  @spec get_col(__MODULE__.t(), non_neg_integer()) :: list()
   def get_col(grid, col) do
     if col < 0 or col >= grid.cols do
       nil
@@ -86,20 +86,62 @@ defmodule AdventOfCode.Grid do
       grid.data
       |> Tuple.to_list()
       |> Enum.map(&elem(&1, col))
-      |> List.to_tuple()
     end
+  end
+
+  @spec filter_rows(__MODULE__.t(), (tuple() -> boolean())) :: __MODULE__.t()
+  def filter_rows(grid, filter_fun) do
+    data =
+      grid.data
+      |> Tuple.to_list()
+      |> Enum.filter(&filter_fun.(&1))
+      |> List.to_tuple()
+
+    cols =
+      if tuple_size(data) > 0 do
+        tuple_size(elem(data, 0))
+      else
+        0
+      end
+
+    %__MODULE__{cols: cols, rows: tuple_size(data), data: data}
+  end
+
+  @spec filter_cols(__MODULE__.t(), (tuple() -> boolean())) :: __MODULE__.t()
+  def filter_cols(grid, filter_fun) do
+    grid
+    |> transpose()
+    |> filter_rows(filter_fun)
+    |> transpose()
+  end
+
+  @spec map(__MODULE__.t(), fun()) :: __MODULE__.t()
+  def map(grid, map_func) do
+    data =
+      grid
+      |> to_iterable()
+      |> Enum.map(&map_func.(&1))
+      |> Enum.chunk_every(grid.cols)
+      |> Enum.map(&List.to_tuple/1)
+      |> List.to_tuple()
+
+    %__MODULE__{data: data, rows: grid.rows, cols: grid.cols}
   end
 
   @spec transpose(__MODULE__.t()) :: __MODULE__.t()
   def transpose(grid) do
-    data =
-      grid.data
-      |> Tuple.to_list()
-      |> Enum.map(&Tuple.to_list/1)
-      |> Enum.zip()
-      |> List.to_tuple()
+    if grid.rows == 0 or grid.cols == 0 do
+      grid
+    else
+      data =
+        grid.data
+        |> Tuple.to_list()
+        |> Enum.map(&Tuple.to_list/1)
+        |> Enum.zip()
+        |> List.to_tuple()
 
-    %__MODULE__{rows: grid.cols, cols: grid.rows, data: data}
+      %__MODULE__{rows: grid.cols, cols: grid.rows, data: data}
+    end
   end
 
   @spec rotate_90(__MODULE__.t()) :: __MODULE__.t()
