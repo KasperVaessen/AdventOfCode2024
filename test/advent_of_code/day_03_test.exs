@@ -3,20 +3,23 @@ defmodule AdventOfCode.Day03Test do
 
   import AdventOfCode.Day03
 
-  @input """
+  @input1 """
+  xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))
   """
 
-  @tag :skip
-  test "part1" do
-    result = part1(@input)
+  @input2 """
+  xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))
+  """
 
-    assert result
+  test "part1" do
+    result = part1(@input1)
+
+    assert result == 161
   end
 
-  @tag :skip
   test "part2" do
-    result = part2(@input)
+    result = part2(@input2)
 
-    assert result
+    assert result == 48
   end
 end
