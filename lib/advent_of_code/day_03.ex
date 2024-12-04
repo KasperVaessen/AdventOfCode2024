@@ -11,10 +11,10 @@ defmodule AdventOfCode.Day03 do
         capture: ["d1", "d2", "d", "dn"]
       )
       |> Enum.reduce({0, true}, fn
-        ["", "", "", "don't()"], {val, status} ->
+        ["", "", "", "don't()"], {val, _status} ->
           {val, false}
 
-        ["", "", "do()", ""], {val, status} ->
+        ["", "", "do()", ""], {val, _status} ->
           {val, true}
 
         [int1, int2, "", ""], {val, true} ->
