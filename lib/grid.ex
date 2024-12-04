@@ -50,6 +50,10 @@ defmodule AdventOfCode.Grid do
     end
   end
 
+  def get(grid, {row, col}) do
+    get(grid, row, col)
+  end
+
   @spec set(__MODULE__.t(), non_neg_integer(), non_neg_integer(), any()) ::
           __MODULE__.t()
   def set(grid, row, col, value) do
@@ -195,7 +199,7 @@ defmodule AdventOfCode.Grid do
 
   @spec print(__MODULE__.t(), String.t()) :: __MODULE__.t()
   def print(grid, spacer \\ "") do
-    IO.puts(get_string(grid, spacer))
+    IO.puts(get_string(grid, spacer) <> "\n")
     grid
   end
 
