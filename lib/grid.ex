@@ -100,11 +100,13 @@ defmodule AdventOfCode.Grid do
     end
   end
 
-  @spec get(__MODULE__.t(), (any() -> boolean())) :: {non_neg_integer(), non_neg_integer()}
-  def find_pos!(grid, match_fun) do
+  @spec find_pos(__MODULE__.t(), (any() -> boolean())) :: {non_neg_integer(), non_neg_integer()}
+  def find_pos(grid, match_fun) do
     index = grid |> to_iterable() |> Enum.find_index(match_fun)
 
-    {div(index, grid.cols), rem(index, grid.cols)}
+    if index do
+      {div(index, grid.cols), rem(index, grid.cols)}
+    end
   end
 
   @spec filter_rows(__MODULE__.t(), (tuple() -> boolean())) :: __MODULE__.t()
