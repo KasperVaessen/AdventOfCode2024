@@ -50,9 +50,13 @@ defmodule AdventOfCode.Grid do
     end
   end
 
+  @spec get(__MODULE__.t(), {non_neg_integer(), non_neg_integer()}) :: any()
   def get(grid, {row, col}) do
     get(grid, row, col)
   end
+
+  @spec set(__MODULE__.t(), {non_neg_integer(), non_neg_integer()}, any()) :: __MODULE__.t()
+  def set(grid, {row, col}, value), do: set(grid, row, col, value)
 
   @spec set(__MODULE__.t(), non_neg_integer(), non_neg_integer(), any()) ::
           __MODULE__.t()
@@ -65,7 +69,10 @@ defmodule AdventOfCode.Grid do
         |> Tuple.to_list()
         |> List.replace_at(
           row,
-          elem(grid.data, row) |> Tuple.to_list() |> List.replace_at(col, value)
+          elem(grid.data, row)
+          |> Tuple.to_list()
+          |> List.replace_at(col, value)
+          |> List.to_tuple()
         )
         |> List.to_tuple()
 
@@ -91,6 +98,13 @@ defmodule AdventOfCode.Grid do
       |> Tuple.to_list()
       |> Enum.map(&elem(&1, col))
     end
+  end
+
+  @spec get(__MODULE__.t(), (any() -> boolean())) :: {non_neg_integer(), non_neg_integer()}
+  def find_pos!(grid, match_fun) do
+    index = grid |> to_iterable() |> Enum.find_index(match_fun)
+
+    {div(index, grid.cols), rem(index, grid.cols)}
   end
 
   @spec filter_rows(__MODULE__.t(), (tuple() -> boolean())) :: __MODULE__.t()
