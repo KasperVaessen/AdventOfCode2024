@@ -17,12 +17,12 @@ defmodule AdventOfCode.Grid do
     read_grid(input, nil, mapper)
   end
 
-  @spec read_grid(String.t(), String.t() | nil) :: __MODULE__.t()
+  @spec read_grid(String.t(), String.t() | [String.t()] | nil) :: __MODULE__.t()
   def read_grid(input, sep) when is_binary(sep) do
     read_grid(input, sep, fn x -> x end)
   end
 
-  @spec read_grid(String.t(), String.t() | nil, fun()) :: __MODULE__.t()
+  @spec read_grid(String.t(), String.t() | [String.t()] | nil, fun()) :: __MODULE__.t()
   def read_grid(input, sep, mapper) do
     row_mapper =
       if sep do
@@ -241,10 +241,17 @@ defmodule AdventOfCode.Grid do
     %__MODULE__{rows: 3, cols: 3, data: data}
   end
 
-  @spec to_iterable(__MODULE__.t()) :: list()
+  @spec to_iterable(__MODULE__.t()) :: list(any())
   def to_iterable(grid) do
     grid.data
     |> Tuple.to_list()
     |> Enum.flat_map(&Tuple.to_list/1)
+  end
+
+  @spec to_lists(__MODULE__.t()) :: list(list(any()))
+  def to_lists(grid) do
+    grid.data
+    |> Tuple.to_list()
+    |> Enum.map(&Tuple.to_list/1)
   end
 end
