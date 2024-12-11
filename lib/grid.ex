@@ -109,6 +109,22 @@ defmodule AdventOfCode.Grid do
     end
   end
 
+  @spec find_all_pos(__MODULE__.t(), (any() -> boolean())) :: [
+          {non_neg_integer(), non_neg_integer()}
+        ]
+  def find_all_pos(grid, match_fun) do
+    grid
+    |> to_iterable()
+    |> Enum.with_index()
+    |> Enum.map(fn {val, index} ->
+      if match_fun.(val) do
+        index
+      end
+    end)
+    |> Enum.reject(&is_nil/1)
+    |> Enum.map(&{div(&1, grid.cols), rem(&1, grid.cols)})
+  end
+
   @spec filter_rows(__MODULE__.t(), (tuple() -> boolean())) :: __MODULE__.t()
   def filter_rows(grid, filter_fun) do
     data =

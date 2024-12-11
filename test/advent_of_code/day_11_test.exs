@@ -4,16 +4,15 @@ defmodule AdventOfCode.Day11Test do
   import AdventOfCode.Day11
 
   @input """
+  125 17
   """
 
-  @tag :skip
   test "part1" do
     result = part1(@input)
 
-    assert result
+    assert result == 55312
   end
 
-  @tag :skip
   test "part2" do
     result = part2(@input)
 
